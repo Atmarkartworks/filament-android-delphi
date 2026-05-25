@@ -84,7 +84,7 @@ uses
   Androidapi.JNI.JavaTypes,
   FMX.Platform.Android;
 const
-  MAIN_COLOR: TAlphaColor = TAlphaColors.Darkolivegreen;
+  MAIN_COLOR: TAlphaColor = TAlphaColors.Gray;
 var
   MyActivity: JActivity;
 {$ENDIF}

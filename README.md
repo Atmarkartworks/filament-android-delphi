@@ -49,7 +49,7 @@ $env:Path = "C:\usr\local\gradle\gradle-8.14.5\bin;" + $env:Path
 **Run from the repository root.**
 
 ```powershell
-PS G:\dev\delphi\filament-android-delphi> .\DownloadToolsBin.PS1
+PS Z:\dev\filament-android-delphi> .\DownloadToolsBin.PS1
 ```
 
 > **Warning:** The download is over **700 MB** — ensure you have a stable connection and sufficient disk space before proceeding.
@@ -59,8 +59,8 @@ PS G:\dev\delphi\filament-android-delphi> .\DownloadToolsBin.PS1
 **Change directory to `delphi/` first**, then run the script from there.
 
 ```powershell
-PS G:\dev\delphi\filament-android-delphi> cd delphi
-PS G:\dev\delphi\filament-android-delphi\delphi> .\fetch_filament.PS1
+PS Z:\dev\filament-android-delphi> cd delphi
+PS Z:\dev\filament-android-delphi\delphi> .\fetch_filament.PS1
 ```
 
 > **Important:** The script must be executed from the `delphi/` subdirectory. Running it from the repo root will fail because the output directory is resolved relative to the current working directory (`delphi\aar`).

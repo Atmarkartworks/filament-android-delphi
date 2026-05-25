@@ -2,6 +2,10 @@
 
 A working example of integrating [Google Filament](https://github.com/google/filament) — a physically based rendering (PBR) engine — into a **Delphi FMX Android** application via a JNI bridge library.
 
+## Demo
+
+[![Demo on YouTube](https://img.youtube.com/vi/FL2EKga-oOc/hqdefault.jpg)](https://youtube.com/shorts/FL2EKga-oOc)
+
 ## Overview
 
 This repository demonstrates how to host a native Android Filament rendering surface inside a Delphi FireMonkey (FMX) application. The architecture consists of two layers:

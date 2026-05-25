@@ -340,10 +340,10 @@
             <Disabled/>
             <ContainerId>ClassesdexFile64</ContainerId>
         </JavaReference>
-        <AarReference Include="..\aar\downloads\filament-android-1.71.4.aar">
+        <JavaReference Include="..\aar\output\jar\filament-android-1.71.4.jar">
             <Disabled/>
             <ContainerId>ClassesdexFile64</ContainerId>
-        </AarReference>
+        </JavaReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

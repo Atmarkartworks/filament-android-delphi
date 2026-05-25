@@ -1,0 +1,15 @@
+material {
+    name : "Unlit",
+    shadingModel : unlit,
+    requires : [
+        color // ★ 頂点カラー(COLOR属性)をJava側から受け取るために必要
+    ]
+}
+
+fragment {
+    void material(inout MaterialInputs material) {
+        prepareMaterial(material);
+        // ★ 固定の赤 [float4(1.0, 0.0, 0.0, 1.0)] から、頂点カラーをそのまま出力するように変更
+        material.baseColor = getColor(); 
+    }
+}

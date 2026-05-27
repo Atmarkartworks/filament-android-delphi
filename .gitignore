@@ -37,6 +37,8 @@ bin
 **/*.7z
 **/.gradle/
 **/.idea/
+*.bat
+*.local
 .vscode
 *.iml
 *.log

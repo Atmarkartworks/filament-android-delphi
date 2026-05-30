@@ -132,6 +132,50 @@ filament-android-delphi/
 2. The **`generateDelphiUnit`** Gradle task introspects the compiled JAR and emits a Delphi Pascal unit (`AAW.JNI.mylibrary.pas`) that mirrors the Java class/method signatures using Delphi's `Androidapi.JNIBridge` infrastructure.
 3. The **Delphi FMX app** imports this generated unit, obtains a reference to the host `Activity`, and delegates Filament lifecycle calls (`open` / `close`) through the standard JNI bridge.
 
+## Migration Roadmap
+
+### Current State
+
+The current implementation simply calls the **Android Framework published by the Filament team** from Delphi via a **JNI Bridge**:
+
+- `filament-android.jar` — the Filament Android Java API — is loaded by the Delphi runtime through the standard `Androidapi.JNIBridge` mechanism.
+- `libfilament-jni.so` — the Filament native shared library — is invoked indirectly through the JNI layer exposed by the JAR.
+
+The bridge library (`mylibrary`) acts as an intermediary: it wraps the Filament Android SDK in Kotlin/Java and exposes a minimal JNI surface that the Delphi FMX application can consume via auto-generated bindings.
+
+### Migration Goal
+
+The planned migration has two key replacements:
+
+| Current | Target |
+|---|---|
+| `filament-android.jar` | Replaced by the **Delphi Android RTL** (direct Pascal-level integration, no Java intermediary) |
+| `libfilament-jni.so` (called via JNI) | Replaced by direct calls to the **Filament C-API** (`libfilament.so`) |
+
+By eliminating the Java layer entirely and driving Filament through its public C-API from Delphi Pascal code, the architecture becomes:
+
+```
+Delphi FMX App (Pascal)
+  └─ Filament C-API  (cdecl / external declarations)
+       └─ libfilament.so  (Filament native engine)
+```
+
+### Objective
+
+Through this migration, the project aims to **run all Android Samples published by the Filament team entirely within Delphi** — with no Kotlin/Java bridge library required.
+
+This means every sample from https://github.com/google/filament/tree/main/android/samples should become reproducible as a Delphi FMX application, using only:
+
+- Delphi Android RTL (replacing `filament-android.jar`)
+- Direct C-API bindings (replacing `libfilament-jni.so`)
+
+### Rationale
+
+- Removes the dependency on Android Studio and the Kotlin/Java toolchain for end users.
+- Enables full Pascal-level control over the Filament engine lifecycle.
+- Aligns with Delphi's native Android deployment model (no JVM layer for engine calls).
+- Makes the Filament feature set directly accessible to the Delphi/Pascal community.
+
 ## License
 
 Copyright 2026 Atmarkartworks

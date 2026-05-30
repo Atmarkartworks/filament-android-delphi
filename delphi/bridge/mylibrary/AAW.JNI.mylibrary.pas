@@ -51,8 +51,6 @@ type
   JSplashScreen_OnExitAnimationListener = interface;//android.window.SplashScreen$OnExitAnimationListener
   JSplashScreenView = interface;//android.window.SplashScreenView
   JTrustedPresentationThresholds = interface;//android.window.TrustedPresentationThresholds
-  JChatGptFilament = interface;//com.gyabinet.filament.mylibrary.ChatGptFilament
-  JChatGptOverlayFilament = interface;//com.gyabinet.filament.mylibrary.ChatGptOverlayFilament
   JMyLibMainActivityUtil = interface;//com.gyabinet.filament.mylibrary.MyLibMainActivityUtil
   JUserPrincipal = interface;//java.nio.file.attribute.UserPrincipal
   JGroupPrincipal = interface;//java.nio.file.attribute.GroupPrincipal
@@ -908,34 +906,8 @@ type
   end;
   TJTrustedPresentationThresholds = class(TJavaGenericImport<JTrustedPresentationThresholdsClass, JTrustedPresentationThresholds>) end;
 
-  JChatGptFilamentClass = interface(JObjectClass)
-    ['{A25C9569-6584-4CAF-BE8C-0CFC8EF4A975}']
-    {class} function init: JChatGptFilament; cdecl;
-    {class} procedure create(activity: JActivity); cdecl;
-    {class} procedure destroy; cdecl;
-  end;
-
-  [JavaSignature('com/gyabinet/filament/mylibrary/ChatGptFilament')]
-  JChatGptFilament = interface(JObject)
-    ['{92AA1E4E-45C8-409F-9AA3-456A6FE8C5C0}']
-  end;
-  TJChatGptFilament = class(TJavaGenericImport<JChatGptFilamentClass, JChatGptFilament>) end;
-
-  JChatGptOverlayFilamentClass = interface(JObjectClass)
-    ['{815615FF-D129-4F68-BFB9-9764E1BB296C}']
-    {class} function init: JChatGptOverlayFilament; cdecl;
-    {class} procedure create(activity: JActivity); cdecl;
-    {class} procedure destroy; cdecl;
-  end;
-
-  [JavaSignature('com/gyabinet/filament/mylibrary/ChatGptOverlayFilament')]
-  JChatGptOverlayFilament = interface(JObject)
-    ['{BE4C810E-2F05-4FAD-A374-CB6F5C83F0D7}']
-  end;
-  TJChatGptOverlayFilament = class(TJavaGenericImport<JChatGptOverlayFilamentClass, JChatGptOverlayFilament>) end;
-
   JMyLibMainActivityUtilClass = interface(JObjectClass)
-    ['{ADBFC2CF-7F59-4DB0-92C6-282E4A6D4D7F}']
+    ['{A9ED2C5B-7FBB-414D-B093-DEB53AA601C1}']
     {class} function init: JMyLibMainActivityUtil; cdecl;
     {class} procedure create(activity: JActivity); cdecl;
     {class} procedure destroy(activity: JActivity); cdecl;
@@ -946,7 +918,7 @@ type
 
   [JavaSignature('com/gyabinet/filament/mylibrary/MyLibMainActivityUtil')]
   JMyLibMainActivityUtil = interface(JObject)
-    ['{F5CF9EC4-1182-4CE8-97BA-33108AD302BC}']
+    ['{0EB4F38B-131A-4922-AFC3-429F091DB934}']
   end;
   TJMyLibMainActivityUtil = class(TJavaGenericImport<JMyLibMainActivityUtilClass, JMyLibMainActivityUtil>) end;
 
@@ -1009,8 +981,6 @@ begin
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JSplashScreen_OnExitAnimationListener', TypeInfo(AAW.JNI.mylibrary.JSplashScreen_OnExitAnimationListener));
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JSplashScreenView', TypeInfo(AAW.JNI.mylibrary.JSplashScreenView));
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JTrustedPresentationThresholds', TypeInfo(AAW.JNI.mylibrary.JTrustedPresentationThresholds));
-  TRegTypes.RegisterType('AAW.JNI.mylibrary.JChatGptFilament', TypeInfo(AAW.JNI.mylibrary.JChatGptFilament));
-  TRegTypes.RegisterType('AAW.JNI.mylibrary.JChatGptOverlayFilament', TypeInfo(AAW.JNI.mylibrary.JChatGptOverlayFilament));
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JMyLibMainActivityUtil', TypeInfo(AAW.JNI.mylibrary.JMyLibMainActivityUtil));
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JUserPrincipal', TypeInfo(AAW.JNI.mylibrary.JUserPrincipal));
   TRegTypes.RegisterType('AAW.JNI.mylibrary.JGroupPrincipal', TypeInfo(AAW.JNI.mylibrary.JGroupPrincipal));

@@ -9,17 +9,17 @@ const
 
 // =============================================================================
 // TMaterialKey
-//   C++ 型: filament::gltfio::MaterialKey  (gltfio/MaterialProvider.h)
-//   実体は C++ ビットフィールド構造体。Delphi では不透明バイト配列として渡す。
-//   サイズは gltfio/MaterialProvider.h の定義と一致させること（通常 8 バイト）。
+//   C++ type: filament::gltfio::MaterialKey  (gltfio/MaterialProvider.h)
+//   Actual type is a C++ bit-field struct. Passed as an opaque byte array in Delphi.
+//   Size must match the definition in gltfio/MaterialProvider.h (typically 8 bytes).
 // =============================================================================
 
 type
   TMaterialKey = record
     Data: array[0..7] of Byte;
-    // NOTE: このフィールドは gltfio/MaterialProvider.h の MaterialKey bit-field
-    //       構造体と正確に同じレイアウトが必要。ビルド時に SizeOf(MaterialKey)
-    //       と比較して確認すること。
+    // NOTE: This field must have exactly the same layout as the MaterialKey bit-field
+    //       struct in gltfio/MaterialProvider.h. Verify by comparing with
+    //       SizeOf(MaterialKey) at build time.
   end;
   PMaterialKey = ^TMaterialKey;
 
@@ -51,9 +51,9 @@ function nGetAnimationName(nativeAnimator: Int64; index: Integer): PAnsiChar;
 
 // =============================================================================
 // FilamentAsset  (FilamentAsset.cpp)
-//   NOTE: nGetRoot / nGetEntityCount / nGetEntities は FilamentInstance と
-//         名前が衝突するため nAsset* プレフィックスで区別する。
-//         対応する C++ シンボル名も同様にリネーム済み。
+//   NOTE: nGetRoot / nGetEntityCount / nGetEntities conflict with FilamentInstance
+//         names, so they are distinguished using the nAsset* prefix.
+//         The corresponding C++ symbol names have been renamed accordingly.
 // =============================================================================
 
 function nAssetGetRoot(nativeAsset: Int64): Integer;
@@ -74,7 +74,7 @@ procedure nAssetGetEntities(nativeAsset: Int64; result: PInteger; count: Integer
 function nGetFirstEntityByName(nativeAsset: Int64; name: PAnsiChar): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// result = nil のとき: エンティティ数のみ返す（取得用カウント問い合わせ）
+// When result = nil: returns only the entity count (count query for retrieval)
 function nGetEntitiesByName(nativeAsset: Int64; name: PAnsiChar;
   result: PInteger; count: Integer): Integer;
   cdecl; external LIB_GLTFIO_JNI;
@@ -117,14 +117,14 @@ function nGetInstance(nativeAsset: Int64): Int64;
 function nGetResourceUriCount(nativeAsset: Int64): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// アセット生存中のみ有効な C 文字列ポインタ配列を返す (PPAnsiChar)
+// Returns an array of C string pointers valid only while the asset is alive (PPAnsiChar)
 function nGetResourceUris(nativeAsset: Int64): PPAnsiChar;
   cdecl; external LIB_GLTFIO_JNI;
 
 function nGetMorphTargetCount(nativeAsset: Int64; entityId: Integer): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// result[0..count-1]: モーフターゲット名ポインタ (アセット生存中有効)
+// result[0..count-1]: morph target name pointers (valid while the asset is alive)
 procedure nGetMorphTargetNames(nativeAsset: Int64; entityId: Integer;
   result: PPAnsiChar; count: Integer);
   cdecl; external LIB_GLTFIO_JNI;
@@ -134,7 +134,7 @@ procedure nReleaseSourceData(nativeAsset: Int64);
 
 // =============================================================================
 // FilamentInstance  (FilamentInstance.cpp)
-//   NOTE: nGetRoot / nGetEntityCount / nGetEntities を nInstance* で区別。
+//   NOTE: nGetRoot / nGetEntityCount / nGetEntities are distinguished using nInstance*.
 // =============================================================================
 
 function nInstanceGetRoot(nativeInstance: Int64): Integer;
@@ -155,7 +155,7 @@ procedure nApplyMaterialVariant(nativeInstance: Int64; variantIndex: Integer);
 function nGetMaterialVariantCount(nativeInstance: Int64): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// result[0..count-1]: バリアント名ポインタ (インスタンス生存中有効)
+// result[0..count-1]: variant name pointers (valid while the instance is alive)
 procedure nGetMaterialVariantNames(nativeInstance: Int64; result: PPAnsiChar; count: Integer);
   cdecl; external LIB_GLTFIO_JNI;
 
@@ -174,7 +174,7 @@ procedure nDetachSkin(nativeInstance: Int64; skinIndex: Integer; targetEntity: I
 function nGetSkinCount(nativeInstance: Int64): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// result[0..count-1]: スキン名ポインタ (インスタンス生存中有効)
+// result[0..count-1]: skin name pointers (valid while the instance is alive)
 procedure nGetSkinNames(nativeInstance: Int64; result: PPAnsiChar; count: Integer);
   cdecl; external LIB_GLTFIO_JNI;
 
@@ -189,7 +189,7 @@ procedure nGetJointsAt(nativeInstance: Int64; skinIndex: Integer;
 // AssetLoader  (AssetLoader.cpp)
 // =============================================================================
 
-// nativeEntities: EntityManager* (EntityManager から取得)
+// nativeEntities: EntityManager* (obtained from EntityManager)
 function nCreateAssetLoader(nativeEngine: Int64; nativeMaterialProvider: Int64;
   nativeEntities: Int64): Int64;
   cdecl; external LIB_GLTFIO_JNI;
@@ -197,11 +197,11 @@ function nCreateAssetLoader(nativeEngine: Int64; nativeMaterialProvider: Int64;
 procedure nDestroyAssetLoader(nativeLoader: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// data: glTF バイナリデータ (Pointer)、size: バイト数
+// data: glTF binary data (Pointer), size: byte count
 function nCreateAsset(nativeLoader: Int64; data: Pointer; size: Integer): Int64;
   cdecl; external LIB_GLTFIO_JNI;
 
-// instances[0..numInstances-1] に FilamentInstance ポインタを格納して返す
+// Stores and returns FilamentInstance pointers in instances[0..numInstances-1]
 function nCreateInstancedAsset(nativeLoader: Int64; data: Pointer; size: Integer;
   instances: PInt64; numInstances: Integer): Int64;
   cdecl; external LIB_GLTFIO_JNI;
@@ -226,7 +226,7 @@ function nCreateResourceLoader(nativeEngine: Int64;
 procedure nDestroyResourceLoader(nativeLoader: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// url: UTF-8 文字列。data/size: リソースバイナリ。呼び出し元がバッファを管理する。
+// url: UTF-8 string. data/size: resource binary. The caller manages the buffer.
 procedure nAddResourceData(nativeLoader: Int64; url: PAnsiChar;
   data: Pointer; size: Integer);
   cdecl; external LIB_GLTFIO_JNI;
@@ -252,7 +252,7 @@ procedure nAsyncUpdateLoad(nativeLoader: Int64);
 procedure nAsyncCancelLoad(nativeLoader: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// TextureProvider ファクトリ
+// TextureProvider factory
 function nCreateStbProvider(nativeEngine: Int64): Int64;
   cdecl; external LIB_GLTFIO_JNI;
 
@@ -268,7 +268,7 @@ function nCreateWebpProvider(nativeEngine: Int64): Int64;
 procedure nDestroyTextureProvider(nativeProvider: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// url: TextureProvider が処理する URL スキーム (例: "image/ktx2")
+// url: URL scheme processed by TextureProvider (e.g., "image/ktx2")
 procedure nAddTextureProvider(nativeLoader: Int64; url: PAnsiChar;
   nativeProvider: Int64);
   cdecl; external LIB_GLTFIO_JNI;
@@ -286,15 +286,15 @@ procedure nDestroyUbershaderProvider(nativeProvider: Int64);
 procedure nDestroyMaterials(nativeProvider: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// materialKey: in-out (constrain 後の値が書き戻される)
-// uvmap[0..uvmapSize-1]: UvMap 出力（UvSet 整数値）
-// 戻り値: MaterialInstance* (Int64 として返す)
+// materialKey: in-out (constrained value is written back)
+// uvmap[0..uvmapSize-1]: UvMap output (UvSet integer values)
+// Return value: MaterialInstance* (returned as Int64)
 function nCreateMaterialInstance(nativeProvider: Int64;
   materialKey: PMaterialKey; uvmap: PInteger; uvmapSize: Integer;
   label_: PAnsiChar; extras: PAnsiChar): Int64;
   cdecl; external LIB_GLTFIO_JNI;
 
-// 戻り値: Material* (Int64 として返す)
+// Return value: Material* (returned as Int64)
 function nGetMaterial(nativeProvider: Int64;
   materialKey: PMaterialKey; uvmap: PInteger; uvmapSize: Integer;
   label_: PAnsiChar): Int64;
@@ -303,7 +303,7 @@ function nGetMaterial(nativeProvider: Int64;
 function nGetMaterialCount(nativeProvider: Int64): Integer;
   cdecl; external LIB_GLTFIO_JNI;
 
-// result[0..count-1]: Material* ポインタ
+// result[0..count-1]: Material* pointers
 procedure nGetMaterials(nativeProvider: Int64; result: PInt64; count: Integer);
   cdecl; external LIB_GLTFIO_JNI;
 
@@ -311,8 +311,8 @@ procedure nGetMaterials(nativeProvider: Int64; result: PInt64; count: Integer);
 // MaterialProvider  (MaterialKey.cpp)
 // =============================================================================
 
-// materialKey: in-out (constrain 後の値が書き戻される)
-// uvMap[0..uvMapSize-1]: UvMap 出力
+// materialKey: in-out (constrained value is written back)
+// uvMap[0..uvMapSize-1]: UvMap output
 procedure nConstrainMaterial(materialKey: PMaterialKey;
   uvMap: PInteger; uvMapSize: Integer);
   cdecl; external LIB_GLTFIO_JNI;

@@ -30,11 +30,15 @@ Tapping **Open** in the sample app starts the Filament module; tapping **Close**
 
 ## Build Steps
 
-### 1. Clone the repository
+### 1. Download the repository
+
+> **Note:** `git clone` downloads over **800 MB** of history. Use the ZIP download below to get only the latest snapshot.
 
 ```powershell
-git clone https://github.com/Atmarkartworks/filament-android-delphi.git
-cd filament-android-delphi
+PS Z:\dev> curl -o filament-android-delphi.zip https://github.com/Atmarkartworks/filament-android-delphi/archive/refs/heads/feature/delphi-filament-bridge.zip
+PS Z:\dev> Expand-Archive -Path filament-android-delphi.zip -DestinationPath .
+PS Z:\dev> Rename-Item -Path filament-android-delphi-feature-delphi-filament-bridge -NewName filament-android-delphi
+PS Z:\dev> cd filament-android-delphi
 ```
 
 ### 2. Install Gradle and add it to PATH

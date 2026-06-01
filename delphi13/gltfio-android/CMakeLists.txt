@@ -62,14 +62,12 @@ set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} -Wl,
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,max-page-size=16384")
 
 set(GLTFIO_SRCS
-        src/main/cpp/Animator.cpp
-        src/main/cpp/AssetLoader.cpp
-        src/main/cpp/FilamentAsset.cpp
-        src/main/cpp/FilamentInstance.cpp
-        src/main/cpp/MaterialKey.cpp
-        src/main/cpp/MaterialKey.h
-        src/main/cpp/UbershaderProvider.cpp
-        src/main/cpp/ResourceLoader.cpp
+        src/cpp/Animator.cpp
+        src/cpp/AssetLoader.cpp
+        src/cpp/FilamentAsset.cpp
+        src/cpp/FilamentInstance.cpp
+        src/cpp/UbershaderProvider.cpp
+        src/cpp/ResourceLoader.cpp
 
         ${FILAMENT_DIR}/include/gltfio/materials/uberarchive.h
 

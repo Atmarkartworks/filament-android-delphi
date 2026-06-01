@@ -8,22 +8,6 @@ const
   LIB_GLTFIO_JNI = 'gltfio-jni';  // libgltfio-jni.so
 
 // =============================================================================
-// TMaterialKey
-//   C++ type: filament::gltfio::MaterialKey  (gltfio/MaterialProvider.h)
-//   Actual type is a C++ bit-field struct. Passed as an opaque byte array in Delphi.
-//   Size must match the definition in gltfio/MaterialProvider.h (typically 8 bytes).
-// =============================================================================
-
-type
-  TMaterialKey = record
-    Data: array[0..7] of Byte;
-    // NOTE: This field must have exactly the same layout as the MaterialKey bit-field
-    //       struct in gltfio/MaterialProvider.h. Verify by comparing with
-    //       SizeOf(MaterialKey) at build time.
-  end;
-  PMaterialKey = ^TMaterialKey;
-
-// =============================================================================
 // Animator  (Animator.cpp)
 // =============================================================================
 
@@ -286,17 +270,57 @@ procedure nDestroyUbershaderProvider(nativeProvider: Int64);
 procedure nDestroyMaterials(nativeProvider: Int64);
   cdecl; external LIB_GLTFIO_JNI;
 
-// materialKey: in-out (constrained value is written back)
-// uvmap[0..uvmapSize-1]: UvMap output (UvSet integer values)
+// uvmap[0..7]: UvMap output (UvSet values; 0=UNUSED 1=UV0 2=UV1).
+// constrainMaterial() is called internally; no separate nConstrainMaterial needed.
 // Return value: MaterialInstance* (returned as Int64)
 function nCreateMaterialInstance(nativeProvider: Int64;
-  materialKey: PMaterialKey; uvmap: PInteger; uvmapSize: Integer;
+  doubleSided: Boolean; unlit: Boolean; hasVertexColors: Boolean;
+  hasBaseColorTexture: Boolean; hasNormalTexture: Boolean; hasOcclusionTexture: Boolean;
+  hasEmissiveTexture: Boolean; useSpecularGlossiness: Boolean;
+  alphaMode: Integer;
+  enableDiagnostics: Boolean;
+  hasMetallicRoughnessTexture: Boolean;
+  metallicRoughnessUV: Byte; baseColorUV: Byte;
+  hasClearCoatTexture: Boolean; clearCoatUV: Byte;
+  hasClearCoatRoughnessTexture: Boolean; clearCoatRoughnessUV: Byte;
+  hasClearCoatNormalTexture: Boolean; clearCoatNormalUV: Byte;
+  hasClearCoat: Boolean; hasTransmission: Boolean; hasTextureTransforms: Boolean;
+  emissiveUV: Byte; aoUV: Byte; normalUV: Byte;
+  hasTransmissionTexture: Boolean; transmissionUV: Byte;
+  hasSheenColorTexture: Boolean; sheenColorUV: Byte;
+  hasSheenRoughnessTexture: Boolean; sheenRoughnessUV: Byte;
+  hasVolumeThicknessTexture: Boolean; volumeThicknessUV: Byte;
+  hasSheen: Boolean; hasIOR: Boolean;
+  hasVolume: Boolean; hasDispersion: Boolean;
+  hasSpecular: Boolean; hasSpecularTexture: Boolean; hasSpecularColorTexture: Boolean;
+  specularTextureUV: Byte; specularColorTextureUV: Byte;
+  uvmap: PInteger;
   label_: PAnsiChar; extras: PAnsiChar): Int64;
   cdecl; external LIB_GLTFIO_JNI;
 
-// Return value: Material* (returned as Int64)
+// uvmap[0..7]: UvMap output. Return value: Material* (returned as Int64)
 function nGetMaterial(nativeProvider: Int64;
-  materialKey: PMaterialKey; uvmap: PInteger; uvmapSize: Integer;
+  doubleSided: Boolean; unlit: Boolean; hasVertexColors: Boolean;
+  hasBaseColorTexture: Boolean; hasNormalTexture: Boolean; hasOcclusionTexture: Boolean;
+  hasEmissiveTexture: Boolean; useSpecularGlossiness: Boolean;
+  alphaMode: Integer;
+  enableDiagnostics: Boolean;
+  hasMetallicRoughnessTexture: Boolean;
+  metallicRoughnessUV: Byte; baseColorUV: Byte;
+  hasClearCoatTexture: Boolean; clearCoatUV: Byte;
+  hasClearCoatRoughnessTexture: Boolean; clearCoatRoughnessUV: Byte;
+  hasClearCoatNormalTexture: Boolean; clearCoatNormalUV: Byte;
+  hasClearCoat: Boolean; hasTransmission: Boolean; hasTextureTransforms: Boolean;
+  emissiveUV: Byte; aoUV: Byte; normalUV: Byte;
+  hasTransmissionTexture: Boolean; transmissionUV: Byte;
+  hasSheenColorTexture: Boolean; sheenColorUV: Byte;
+  hasSheenRoughnessTexture: Boolean; sheenRoughnessUV: Byte;
+  hasVolumeThicknessTexture: Boolean; volumeThicknessUV: Byte;
+  hasSheen: Boolean; hasIOR: Boolean;
+  hasVolume: Boolean; hasDispersion: Boolean;
+  hasSpecular: Boolean; hasSpecularTexture: Boolean; hasSpecularColorTexture: Boolean;
+  specularTextureUV: Byte; specularColorTextureUV: Byte;
+  uvmap: PInteger;
   label_: PAnsiChar): Int64;
   cdecl; external LIB_GLTFIO_JNI;
 
@@ -305,16 +329,6 @@ function nGetMaterialCount(nativeProvider: Int64): Integer;
 
 // result[0..count-1]: Material* pointers
 procedure nGetMaterials(nativeProvider: Int64; result: PInt64; count: Integer);
-  cdecl; external LIB_GLTFIO_JNI;
-
-// =============================================================================
-// MaterialProvider  (MaterialKey.cpp)
-// =============================================================================
-
-// materialKey: in-out (constrained value is written back)
-// uvMap[0..uvMapSize-1]: UvMap output
-procedure nConstrainMaterial(materialKey: PMaterialKey;
-  uvMap: PInteger; uvMapSize: Integer);
   cdecl; external LIB_GLTFIO_JNI;
 
 implementation
